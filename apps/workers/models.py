@@ -44,7 +44,6 @@ class Bar(Base):
     __table_args__ = (
         Index('idx_bars_symbol_time', 'symbol', 'timestamp'),
         Index('idx_bars_timestamp', 'timestamp'),
-        UniqueConstraint('symbol', 'timestamp', name='uq_bars_symbol_timestamp'),
         CheckConstraint('open > 0', name='ck_bars_open_positive'),
         CheckConstraint('high > 0', name='ck_bars_high_positive'),
         CheckConstraint('low > 0', name='ck_bars_low_positive'),
@@ -58,9 +57,8 @@ class Bar(Base):
         {'schema': 'market_data'}
     )
     
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    symbol = Column(String(20), nullable=False)
-    timestamp = Column(DateTime, nullable=False)
+    symbol = Column(String(20), primary_key=True, nullable=False)
+    timestamp = Column(DateTime, primary_key=True, nullable=False)
     open = Column(Float, nullable=False)
     high = Column(Float, nullable=False)
     low = Column(Float, nullable=False)

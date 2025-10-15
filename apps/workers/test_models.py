@@ -45,9 +45,10 @@ def test_symbol_map_creation(test_db):
 
 def test_bar_creation(test_db):
     """Test creating a Bar entry."""
+    now = datetime.utcnow()
     bar = Bar(
         symbol='TEST',
-        timestamp=datetime.utcnow(),
+        timestamp=now,
         open=100.0,
         high=105.0,
         low=99.0,
@@ -55,7 +56,7 @@ def test_bar_creation(test_db):
         volume=1000000,
         split_adjusted=False,
         dividend_adjusted=False,
-        created_at=datetime.utcnow()
+        created_at=now
     )
     test_db.add(bar)
     test_db.commit()

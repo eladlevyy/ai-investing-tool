@@ -40,7 +40,6 @@ def upgrade() -> None:
     # Create bars table (will be converted to hypertable after creation)
     op.create_table(
         'bars',
-        sa.Column('id', sa.BigInteger(), autoincrement=True, nullable=False),
         sa.Column('symbol', sa.String(length=20), nullable=False),
         sa.Column('timestamp', sa.DateTime(), nullable=False),
         sa.Column('open', sa.Float(), nullable=False),
@@ -62,8 +61,7 @@ def upgrade() -> None:
         sa.CheckConstraint('high >= close', name='ck_bars_high_gte_close'),
         sa.CheckConstraint('low <= open', name='ck_bars_low_lte_open'),
         sa.CheckConstraint('low <= close', name='ck_bars_low_lte_close'),
-        sa.PrimaryKeyConstraint('id'),
-        sa.UniqueConstraint('symbol', 'timestamp', name='uq_bars_symbol_timestamp'),
+        sa.PrimaryKeyConstraint('symbol', 'timestamp'),
         schema='market_data'
     )
     op.create_index('idx_bars_symbol_time', 'bars', ['symbol', 'timestamp'], unique=False, schema='market_data')
