@@ -66,12 +66,18 @@
 
 ## M1: Core Backtesting Engine
 
-### Data Management
-- [ ] Design TimescaleDB schema for OHLCV data
-- [ ] Implement data ingestion pipeline
-- [ ] Add data validation and cleaning
-- [ ] Create data provider interface
-- [ ] Integrate with free data sources (Yahoo Finance, Alpha Vantage)
+### Data Management (Completed ✓)
+- [x] Design TimescaleDB schema for OHLCV data
+- [x] Implement data ingestion pipeline
+- [x] Add data validation and cleaning
+- [x] Create data provider interface
+- [x] Integrate with free data sources (Yahoo Finance)
+- [x] Implement late repair for missing bars
+- [x] Create symbol map table
+- [x] Build corporate actions pipeline (splits and dividends)
+- [x] Set up TimescaleDB hypertables with partitioning and indexes
+- [x] Add data QA checks (anomalies, duplicates, completeness)
+- [x] Implement automated scheduler for daily ingestion
 
 ### Backtesting Engine
 - [ ] Implement event-driven backtest simulator

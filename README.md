@@ -10,14 +10,30 @@ make bootstrap  # installs pre‑commit, sets up venv, pnpm, etc.
 # 2) Bring up local stack
 docker compose up -d  # Postgres+Timescale, Redis, MinIO
 
-# 3) Seed symbols + demo bars
-make seed-demo
+# 3) Run database migrations for M1 Data Hub
+docker exec -i aiinvest-postgres psql -U aiinvest -d aiinvest < apps/workers/migration.sql
 
-# 4) Start services
+# 4) Seed symbols + demo bars (M1 Data Hub)
+# Note: Requires Python dependencies installed
+# pip install -r apps/workers/requirements.txt
+python scripts/seed_demo.py
+
+# 5) Start services (when implemented)
 make api     # FastAPI on :8000
 make workers # backtests & paper OMS
 make web     # Next.js on :3000
 ```
+
+### M1 Data Hub (Implemented ✓)
+The M1 Data Hub provides automated EOD equity data ingestion:
+- **EOD Data Ingestion**: Automated daily data pulls from yfinance
+- **TimescaleDB Hypertables**: Efficient time-series storage with monthly partitioning
+- **Late Repair**: Automatic detection and filling of missing bars
+- **Corporate Actions**: Tracking of splits and dividends
+- **Data Quality Checks**: Duplicate detection, completeness, and anomaly detection
+- **Scheduler**: Automated daily jobs for ingestion, repair, and QA
+
+See [QUICKSTART_M1.md](QUICKSTART_M1.md) for detailed setup instructions.
 
 ### Environment (.env)
 ```
