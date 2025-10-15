@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # PostgreSQL with TimescaleDB extension
   postgres:
@@ -94,6 +92,28 @@ services:
       "
     networks:
       - aiinvest-network
+
+  # Data Hub Workers - EOD data ingestion and quality checks
+  data-hub-workers:
+    build:
+      context: ./apps/workers
+      dockerfile: Dockerfile
+    container_name: aiinvest-data-hub-workers
+    environment:
+      POSTGRES_URL: postgresql://aiinvest:pass@postgres:5432/aiinvest
+      REDIS_URL: redis://redis:6379/0
+      RUN_JOBS_ON_STARTUP: "false"
+      LOG_LEVEL: INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - aiinvest-network
+    restart: unless-stopped
+    # Uncomment to run scheduler
+    # command: python scheduler.py
 
 volumes:
   postgres_data:
